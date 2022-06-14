@@ -3,55 +3,53 @@
 This project addresses the problem of automated diagnosis of cardiac pathologies, via the signals provided by electrocardiogram (ECG) measurement devices.
 The main purpose of this project is to implement basic signal processing algorithms using Matlab to detect some cardiac pathologies, and develop a graphical user interface (GUI) to load, process and display ECG, in order to help clinicians through their diagnosis.
 
-* [Test](https://github.com/NahlaAbbou13/MICA-Project/tree/main/test)
-
-
 ## Table of Contents
-1. [General Info](#general-info)
-2. [Technologies](#technologies)
-3. [Installation](#installation)
-4. [Collaboration](#collaboration)
-5. [FAQs](#faqs)
-### General Info
+1. [Context and objectives](#context-and-objectives)
+2. [Technical part](#technical-part)
+
+
+## Context and objectives
+This project is designed to help clinicians to detect pathologies automatically only with
+loading the signal analysis.
+The main goal of this project is to analyse an ECG1 signal by:
+- implementing the Pan and Tompkins algorithm to automatically detect the PQRST
+complex,
+![image](https://user-images.githubusercontent.com/107478473/173598858-58d5cd89-a586-4be8-a99a-e1a4c521c8c7.png)
+- designing algorithms to identify certain cardiac pathologies such as cardia tachi, cardia brachy, ectopic beat and fibrillation,
+- conducting a frequency study to visualise these pathologies in the spectrogram of the ECG signal by applying a STFT.
+
+## Technical part
+This part describes the different scripts used to realize this project
+
+#### STFT
 ***
-Write down the general informations of your project. It is worth to always put a project status in the Readme file. This is where you can add it. 
-### Screenshot
-![Image text](https://www.united-internet.de/fileadmin/user_upload/Brands/Downloads/Logo_IONOS_by.jpg)
-## Technologies
+This file [stft.m]() allows to apply the Short Term Fourier Transform to the ECG signal  
+#### Spectrogram
 ***
-A list of technologies used within the project:
-* [Technologie name](https://example.com): Version 12.3 
-* [Technologie name](https://example.com): Version 2.34
-* [Library name](https://example.com): Version 1234
-## Installation
+[spectrogram.m]() is a function which computes the modulus squared of the STFT.
+#### Pan and Tompkins Algorithm 
 ***
-A little intro about the installation. 
-```
-$ git clone https://example.com
-$ cd ../path/to/the/file
-$ npm install
-$ npm start
-```
-Side information: To use the application in a special environment use ```lorem ipsum``` to start
-## Collaboration
+Pan and Tompkins Algorithm: This algorithm is used to localize the R wave. [R_detection.m]()
+
+The PQST waves are detected using these following scripts :
+[Q_and_S_detection.m]()
+[P_and_T_detection.m]()
+
+#### Automatic identification of cardiac pathologies
 ***
-Give instructions on how to collaborate with your project.
-> Maybe you want to write a quote in this part. 
-> It should go over several rows?
-> This is how you do it.
-## FAQs
+The cardiac pathologies (Tachycardia/Bradycardia - Ectopic beat) are detected in the following file:
+[cardiac_pathologies.m]()
+
+Atrial fibrillation is identified in this file: 
+[artrial_filbriation.m]()
+
+
+#### ECG denoising
 ***
-A list of frequently asked questions
-1. **This is a question in bold**
-Answer of the first question with _italic words_. 
-2. __Second question in bold__ 
-To answer this question we use an unordered list:
-* First point
-* Second Point
-* Third point
-3. **Third question in bold**
-Answer of the third question with *italic words*.
-4. **Fourth question in bold**
-| Headline 1 in the tablehead | Headline 2 in the tablehead | Headline 3 in the tablehead |
-|:--------------|:-------------:|--------------:|
-| text-align left | text-align center | text-align right |
+To conserve the useful information and to remove such noises we use the next filters:
+-  low-pass IIR Butterworth filter [lpf_butter.m]()
+-  high-pass Chebyshev filter [hpf_tcheby.m]()
+
+#### Display of the results 
+***
+And to display the spectrograms, and the complex PQRST, we use the function [Affichage_test.m]()
